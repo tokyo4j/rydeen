@@ -1,0 +1,11 @@
+[Unit]
+Description=Daemon for keyboard & gesture remapping
+Requires=local-fs.target
+After=local-fs.target
+
+[Service]
+Type=simple
+ExecStart=rydeen
+
+[Install]
+WantedBy=sysinit.target
