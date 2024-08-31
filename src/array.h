@@ -21,7 +21,7 @@ ARRAY_DEF(uint32_t, u32);
         if ((arr)->cap == (arr)->size) { \
             if (!(arr)->cap) { \
                 (arr)->cap = 1; \
-                (arr)->elems = malloc(1); \
+                (arr)->elems = malloc(sizeof(*(arr)->elems)); \
             } else { \
                 (arr)->cap *= 2; \
                 (arr)->elems = \
@@ -45,13 +45,13 @@ ARRAY_DEF(uint32_t, u32);
 
 #define array_foreach_reverse(arr, entry) \
     for (size_t __i = (arr)->size - 1, __flag = 1; \
-         __flag && __i != (size_t)-1; __flag = !__flag, __i--) \
+         __flag && __i != (size_t) - 1; __flag = !__flag, __i--) \
         for (typeof(*(arr)->elems) entry = (arr)->elems[__i]; __flag; \
              __flag = !__flag)
 
 #define array_foreach_reverse_ref(arr, entry) \
     for (size_t __i = (arr)->size - 1, __flag = 1; \
-         __flag && __i != (size_t)-1; __flag = !__flag, __i--) \
+         __flag && __i != (size_t) - 1; __flag = !__flag, __i--) \
         for (typeof((arr)->elems) entry = &(arr)->elems[__i]; __flag; \
              __flag = !__flag)
 

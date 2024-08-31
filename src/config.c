@@ -209,7 +209,7 @@ static void parse_config_general(const yaml_node_t *general_node) {
 }
 
 static void parse_config_modifier(const yaml_node_pair_t *modifier_kv) {
-    struct modifier *modifier = calloc(sizeof(*modifier), 1);
+    struct modifier *modifier = calloc(1, sizeof(*modifier));
 
     const char *modifier_name =
         node_to_str(yaml_document_get_node(&doc, modifier_kv->key));
@@ -330,7 +330,7 @@ get_undo_key_signals(struct array_key_signal *signals) {
 }
 
 static void parse_config_key_entry(yaml_node_t *entry_node) {
-    struct key_entry *entry = calloc(sizeof(*entry), 1);
+    struct key_entry *entry = calloc(1, sizeof(*entry));
 
     // "entries.[*].key"
     yaml_node_t *key_node = get_node_by_key(entry_node, "key");
@@ -350,7 +350,7 @@ static void parse_config_key_entry(yaml_node_t *entry_node) {
             // if entry is being bound to the keycode (not mouse button) for the
             // first time, bind default entry (ex. a->a, b->b..) beforehand, as
             // entries added later are priotized.
-            struct key_entry *default_entry = calloc(sizeof(*entry), 1);
+            struct key_entry *default_entry = calloc(1, sizeof(*entry));
             default_entry->press_action.type = ACTION_KEY;
             array_add(&default_entry->press_action.key_signals,
                       ((struct key_signal){.keycode = keycode, .state = 1}));
