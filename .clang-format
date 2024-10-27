@@ -1,4 +1,11 @@
 BasedOnStyle: LLVM
-IndentWidth: 4
+UseTab: Always
+IndentWidth: 8
+ContinuationIndentWidth: 8
+AlwaysBreakAfterDefinitionReturnType: true
+BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeBraces: Linux
+IndentCaseLabels: false
+SpaceBeforeParens: ControlStatementsExceptControlMacros
+ForEachMacros: ["tll_foreach"]
 AlignEscapedNewlines: DontAlign
-BreakBeforeTernaryOperators: false

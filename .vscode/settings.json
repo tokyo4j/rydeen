@@ -1,8 +1,10 @@
 {
-  "[meson]": {
-    "editor.tabSize": 4
-  },
   "[c]": {
-    "editor.tabSize": 4
+    "editor.tabSize": 8,
+    "editor.insertSpaces": false
+  },
+  "[cpp]": {
+    "editor.tabSize": 8,
+    "editor.insertSpaces": false
   }
 }

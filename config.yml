@@ -1,28 +1,31 @@
-# Configuration for author(Japanese)'s laptop(ThinkPad P14s Gen 3)
+# Example configuration
 general:
+  swipe_threshold: 50
   key_interval: 0.05
+  key_repeat_delay: 0.5
+  key_repeat_interval: 0.03333
   keyboard:
     layout: us
 
 modifiers:
   VIM:
-    - { key: Alt_L, transfer: false }
-  S:
+    - { key: Alt_L, send_key: false }
+  SHIFT:
     - { key: Shift_L }
     - { key: Shift_R }
-  C:
+  CTRL:
     - { key: Control_L }
     - { key: Control_R }
-  A:
-    - { key: Super_L, transfer: Alt_L }
+  ALT:
+    - { key: Super_L, send_key: Alt_L }
     - { key: Alt_R }
-  M:
-    - { key: Caps_Lock, transfer: Super_L }
+  META:
+    - { key: Caps_Lock, send_key: Super_L }
     - { key: Super_R }
   MOUSE_LEFT:
     - { key: mouse:left }
 
-entries:
+keybinds:
   - key: Next
     on_press: sudo -u '#1000' XDG_RUNTIME_DIR=/run/user/1000 pactl set-sink-volume @DEFAULT_SINK@ -2dB
 
@@ -61,41 +64,42 @@ entries:
     modifiers: [MOUSE_LEFT]
     on_press: [+Alt_L, F4]
 
+gesturebinds:
   - gesture: swipe
     fingers: 3
     direction: up
-    on_start: [+Super_L, Tab]
+    on_forward: [+Super_L, Tab]
 
   - gesture: swipe
     fingers: 3
     direction: down
-    on_start: [+Control_L, w]
+    on_forward: [+Control_L, w]
 
   - gesture: swipe
     fingers: 3
     direction: right
-    on_start: [mouse:backward]
+    on_forward: [mouse:backward]
 
   - gesture: swipe
     fingers: 3
     direction: left
-    on_start: [mouse:forward]
+    on_forward: [mouse:forward]
 
   - gesture: swipe
     fingers: 4
     direction: down
-    on_start: [+Alt_L, F4]
+    on_forward: [+Alt_L, F4]
 
   - gesture: swipe
     fingers: 4
     direction: left
-    repeats: true
-    on_start: sudo -u '#1000' XDG_RUNTIME_DIR=/run/user/1000 pactl set-sink-volume @DEFAULT_SINK@ -2dB
-    on_reverse: sudo -u '#1000' XDG_RUNTIME_DIR=/run/user/1000 pactl set-sink-volume @DEFAULT_SINK@ +2dB
+    repeat: true
+    on_forward: sudo -u '#1000' XDG_RUNTIME_DIR=/run/user/1000 pactl set-sink-volume @DEFAULT_SINK@ -2dB
+    on_backward: sudo -u '#1000' XDG_RUNTIME_DIR=/run/user/1000 pactl set-sink-volume @DEFAULT_SINK@ +2dB
 
   - gesture: swipe
     fingers: 4
     direction: right
-    repeats: true
-    on_start: sudo -u '#1000' XDG_RUNTIME_DIR=/run/user/1000 pactl set-sink-volume @DEFAULT_SINK@ +2dB
-    on_reverse: sudo -u '#1000' XDG_RUNTIME_DIR=/run/user/1000 pactl set-sink-volume @DEFAULT_SINK@ -2dB
+    repeat: true
+    on_forward: sudo -u '#1000' XDG_RUNTIME_DIR=/run/user/1000 pactl set-sink-volume @DEFAULT_SINK@ +2dB
+    on_backward: sudo -u '#1000' XDG_RUNTIME_DIR=/run/user/1000 pactl set-sink-volume @DEFAULT_SINK@ -2dB

@@ -9,9 +9,9 @@ project(
 
 add_global_arguments(['-Wno-unused-parameter'], language: 'c')
 
-if get_option('buildtype') == 'debug'
-    add_global_arguments(['-DDEBUG'], language: 'c')
-endif
+conf_data = configuration_data()
+conf_data.set10('DEBUG', get_option('buildtype') == 'debug')
+configure_file(output: 'config.h', configuration: conf_data)
 
 dependencies = [
     dependency('libinput'),
@@ -19,6 +19,7 @@ dependencies = [
     dependency('libevdev'),
     dependency('libudev'),
     dependency('yaml-0.1'),
+    dependency('tllist'),
     meson.get_compiler('c').find_library('ev', has_headers: ['ev.h']),
 ]
 
