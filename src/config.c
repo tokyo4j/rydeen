@@ -398,8 +398,9 @@ parse_keybind(struct parser_context *ctx, yaml_node_t *keybind_node)
 	} else if (on_press_node->type == YAML_SCALAR_NODE) {
 		keybind.on_press.type = ACTION_COMMAND;
 		keybind.on_press.cmd = strdup(node_to_str(on_press_node));
-	} else
+	} else {
 		PANIC(on_press_node);
+	}
 
 	// "gesturebinds[*].on_release"
 	yaml_node_t *on_release_node =
@@ -520,9 +521,6 @@ static void
 print_action(struct parser_context *ctx, struct action *action)
 {
 	switch (action->type) {
-	case ACTION_NONE:
-		printf("none\n");
-		break;
 	case ACTION_COMMAND:
 		printf("%s\n", action->cmd);
 		break;
@@ -614,6 +612,8 @@ config_init(struct server *server)
 	yaml_parser_load(&ctx.parser, &ctx.doc);
 
 	yaml_node_t *root_node = yaml_document_get_root_node(&ctx.doc);
+	if (!root_node)
+		PANIC(root_node);
 
 	// "general"
 	yaml_node_t *general_node = get_node_by_key(&ctx, root_node, "general");
@@ -688,8 +688,6 @@ free_action(struct action *action)
 		break;
 	case ACTION_COMMAND:
 		free((char *)action->cmd);
-		break;
-	default:
 		break;
 	}
 }

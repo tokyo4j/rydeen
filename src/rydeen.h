@@ -29,7 +29,7 @@ struct key_signal {
 typedef tll(struct key_signal) key_signals_t;
 
 struct action {
-	enum { ACTION_NONE = 0, ACTION_KEY, ACTION_COMMAND } type;
+	enum { ACTION_KEY, ACTION_COMMAND } type;
 	union {
 		// type == ACTION_KEY
 		key_signals_t signals;
