@@ -250,7 +250,6 @@ on_li_events_ready(struct ev_loop *loop, ev_io *w, int revents)
 			libinput_event_get_type(event);
 		switch (event_type) {
 		case LIBINPUT_EVENT_KEYBOARD_KEY:
-		case LIBINPUT_EVENT_POINTER_BUTTON:
 			handle_key_event(server, event_type, event);
 			break;
 		case LIBINPUT_EVENT_GESTURE_SWIPE_BEGIN:
