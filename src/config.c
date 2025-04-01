@@ -521,6 +521,8 @@ static void
 print_action(struct parser_context *ctx, struct action *action)
 {
 	switch (action->type) {
+	case ACTION_NONE:
+		break;
 	case ACTION_COMMAND:
 		printf("%s\n", action->cmd);
 		break;
@@ -683,6 +685,8 @@ static void
 free_action(struct action *action)
 {
 	switch (action->type) {
+	case ACTION_NONE:
+		break;
 	case ACTION_KEY:
 		tll_free(action->signals);
 		break;
