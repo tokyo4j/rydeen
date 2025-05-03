@@ -16,6 +16,8 @@ is_keyboard(struct libevdev *evdev)
 {
 	static uint32_t test_keycodes[] = {KEY_A, KEY_0, KEY_MUTE};
 
+	if (libevdev_has_event_type(evdev, EV_REL))
+		return false;
 	if (!libevdev_has_event_type(evdev, EV_KEY))
 		return false;
 	for (int i = 0; i < (int)ARRAY_SIZE(test_keycodes); i++)
