@@ -11,19 +11,34 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static bool
-is_keyboard(struct libevdev *evdev)
-{
-	static uint32_t test_keycodes[] = {KEY_A, KEY_0, KEY_MUTE};
+enum device_type {
+	DEVICE_NONE,
+	DEVICE_RYDEEN,
+	DEVICE_KEYBOARD,
+	DEVICE_TOUCHPAD,
+	DEVICE_MOUSE,
+};
 
+static enum device_type
+get_device_type(struct libevdev *evdev)
+{
+	if (is_rydeen_device(evdev))
+		return DEVICE_RYDEEN;
 	if (libevdev_has_event_type(evdev, EV_REL))
-		return false;
-	if (!libevdev_has_event_type(evdev, EV_KEY))
-		return false;
-	for (int i = 0; i < (int)ARRAY_SIZE(test_keycodes); i++)
-		if (libevdev_has_event_code(evdev, EV_KEY, test_keycodes[i]))
-			return true;
-	return false;
+		return DEVICE_MOUSE;
+	if (libevdev_has_event_type(evdev, EV_ABS)
+	    && libevdev_has_event_code(evdev, EV_ABS, ABS_MT_TRACKING_ID)) {
+		return DEVICE_TOUCHPAD;
+	}
+	if (libevdev_has_event_type(evdev, EV_KEY)) {
+		static uint32_t test_keycodes[] = {KEY_A, KEY_0, KEY_MUTE};
+		for (int i = 0; i < (int)ARRAY_SIZE(test_keycodes); i++) {
+			if (libevdev_has_event_code(evdev, EV_KEY,
+						    test_keycodes[i]))
+				return DEVICE_KEYBOARD;
+		}
+	}
+	return DEVICE_NONE;
 }
 
 static int
@@ -38,18 +53,20 @@ open_restricted(const char *path, int flags, void *user_data)
 
 	debug("Found device: %s", libevdev_get_name(evdev));
 
-	if (is_rydeen_device(evdev)) {
+	switch (get_device_type(evdev)) {
+	case DEVICE_RYDEEN:
+	case DEVICE_MOUSE:
+	case DEVICE_NONE:
 		debug(" - ignored\n");
 		libevdev_free(evdev);
 		close(fd);
 		return -1;
-	}
-
-	if (is_keyboard(evdev)) {
+	case DEVICE_TOUCHPAD:
+		break;
+	case DEVICE_KEYBOARD:
 		debug(" - grabbed\n");
 		libevdev_grab(evdev, LIBEVDEV_GRAB);
-	} else {
-		debug(" - not grabbed\n");
+		break;
 	}
 
 	libevdev_free(evdev);
