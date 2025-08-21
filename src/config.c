@@ -349,7 +349,7 @@ parse_keybind(struct parser_context *ctx, yaml_node_t *keybind_node)
 	// "keybinds[*].key"
 	yaml_node_t *key_node = get_node_by_key(ctx, keybind_node, "key");
 	if (!key_node)
-		PANIC(key_node);
+		PANIC(keybind_node);
 	const char *key = node_to_str(key_node);
 	uint32_t keycode = keyname_to_keycode(ctx, key);
 	if (!keycode || keycode >= MAX_KEYCODE)
